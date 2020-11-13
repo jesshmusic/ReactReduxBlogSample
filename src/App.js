@@ -2,9 +2,9 @@ import React from 'react'
 import styles from './App.module.css'
 import { connect } from 'react-redux'
 import { fetchArticles, searchArticles } from './features/articles/articlesSlice'
-import ArticleTease from './features/articles/ArticleTease'
 import { fetchArticle } from './features/articles/singleArticleSlice'
 import { PropTypes } from 'prop-types'
+import Sidebar from './components/Sidebar'
 
 const ENTER_KEY = 13
 
@@ -14,7 +14,6 @@ class App extends React.Component {
     this.state = {
       searchValue: ''
     }
-    this.handleFetchSingleArticle = this.handleFetchSingleArticle.bind(this)
   }
 
   componentDidMount () {
@@ -56,32 +55,12 @@ class App extends React.Component {
           <h1>Sample Blog Home</h1>
         </header>
         <section className={ styles.content }>
-          <div className={ styles.sidebar }>
-            <div className={styles.searchSection}>
-              <input className={styles.searchInput}
-                     placeholder="Search..."
-                     value={this.state.searchValue}
-                     onKeyDown={this.handleSearchKeyDown.bind(this)}
-                     onChange={this.handleSearchChange.bind(this)}
-                     autoFocus={true}
-              />
-              <button className={styles.searchButton}
-                      onClick={this.handleSearchButton.bind(this)}
-                      disabled={this.state.searchValue.length < 4}
-                      title={'Search'}>
-                <i className="fas fa-search"/>
-              </button>
-            </div>
-            <div className={styles.articleCount}>
-              {articles.articles.length} articles out of {articles.pagy.count}
-            </div>
-            { articles.status === 'succeeded' ? (articles.articles.map(article => (
-              <ArticleTease article={ article } key={ article.id } getArticle={this.handleFetchSingleArticle}/>
-            ))) : (
-              <i className="fas fa-spinner fa-spin"/>
-            )
-            }
-          </div>
+          <Sidebar onSearch={this.handleSearchKeyDown.bind(this)}
+                   onSearchButton={this.handleSearchButton.bind(this)}
+                   onSearchChange={this.handleSearchChange.bind(this)}
+                   onFetchSingleArticle={this.handleFetchSingleArticle.bind(this)}
+                   searchValue={this.state.searchValue}
+                   articles={articles}/>
           <div className={ styles.articleDisplay }>
             { article.status !== 'succeeded' ? (
               <i className={ `${styles.loadingIcon} fas fa-spinner fa-spin` }/>
