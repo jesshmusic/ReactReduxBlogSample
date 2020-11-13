@@ -1,58 +1,70 @@
 import React from 'react'
-import logo from './logo.svg'
-import { Counter } from './features/counter/Counter'
-import './App.css'
+import styles from './App.module.css'
+import { connect } from 'react-redux'
+import { fetchArticles } from './features/articles/articlesSlice'
+import ArticleTease from './features/articles/ArticleTease'
+import { fetchArticle } from './features/articles/singleArticleSlice'
+import { PropTypes } from 'prop-types'
 
-function App () {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
-  )
+class App extends React.Component {
+  constructor (props) {
+    super(props)
+    this.fetchSingleArticle = this.fetchSingleArticle.bind(this)
+  }
+
+  componentDidMount () {
+    this.props.dispatch(fetchArticles())
+    this.props.dispatch(fetchArticle(1))
+  }
+
+  fetchSingleArticle (event, articleID) {
+    event.preventDefault()
+    console.log(this)
+    this.props.dispatch(fetchArticle(articleID))
+  }
+
+  render () {
+    const { article, articles } = this.props
+    return (
+      <div className={ styles.container }>
+        <header className={ styles.header }>
+          <h1>Sample Blog Home</h1>
+        </header>
+        <section className={ styles.content }>
+          <div className={ styles.sidebar }>
+            { articles.status === 'succeeded' ? (articles.articles.map(article => (
+              <ArticleTease article={ article } key={ article.id } getArticle={this.fetchSingleArticle}/>
+            ))) : (
+              <i className="fas fa-spinner fa-spin"/>
+            )
+            }
+          </div>
+          <div className={ styles.articleDisplay }>
+            { article.status !== 'succeeded' ? (
+              <i className={ `${styles.loadingIcon} fas fa-spinner fa-spin` }/>
+            ) : (
+              <article className={styles.article}>
+                <h2>{ article.article.title }</h2>
+                <div>
+                  { article.article.body }
+                </div>
+              </article>
+            ) }
+          </div>
+        </section>
+      </div>
+    )
+  }
+}
+App.propTypes = {
+  article: PropTypes.object,
+  articles: PropTypes.object,
+  dispatch: PropTypes.func
 }
 
-export default App
+const mapStateToProps = state => ({
+  articles: state.articles,
+  article: state.article
+})
+
+export default connect(mapStateToProps)(App)

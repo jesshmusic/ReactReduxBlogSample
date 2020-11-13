@@ -1,0 +1,33 @@
+.container {
+
+}
+
+.header {
+  padding: 2rem 1rem;
+}
+
+.sidebar {
+  padding-right: 1rem;
+}
+
+.content {
+  display: flex;
+  padding: 1rem;
+}
+
+.articleDisplay {
+  width: 100%;
+}
+
+.article {
+  line-height: 2;
+  margin: 0 auto;
+  max-width: 50rem;
+}
+
+.loadingIcon {
+  color: rgba(83, 126, 143, 0.5);
+  font-size: 20rem;
+  margin: calc(50vh - 19rem) 40%;
+  width: 20rem;
+}

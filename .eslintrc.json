@@ -27,6 +27,7 @@
     "React": "writable",
     "describe": "writable",
     "it": "writable",
-    "cy": "writable"
+    "cy": "writable",
+    "before": "writable"
   }
 }

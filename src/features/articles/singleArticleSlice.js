@@ -2,19 +2,19 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 const initialState = {
-  articles: [],
+  article: {},
   status: 'idle',
   error: null,
-  pagy: {}
+  comments: []
 }
 
-export const fetchArticles = createAsyncThunk('articles/fetchPosts', async () => {
-  const response = await axios.get('https://dialog-blog.herokuapp.com/articles')
+export const fetchArticle = createAsyncThunk('article/fetchSingleArticle', async (articleID) => {
+  const response = await axios.get(`https://dialog-blog.herokuapp.com/articles/${articleID}`)
   return response.data
 })
 
 const articleSlice = createSlice({
-  name: 'articles',
+  name: 'article',
   initialState: initialState,
   reducers: {
     articlesLoading: state => {
@@ -25,22 +25,22 @@ const articleSlice = createSlice({
     articlesReceived: (state, action) => {
       if (state.status === 'pending') {
         state.status = 'idle'
-        state.articles = action.payload
+        state.article = action.payload
       }
     }
   },
   extraReducers: {
-    [fetchArticles.pending]: state => {
+    [fetchArticle.pending]: state => {
       state.status = 'loading'
     },
-    [fetchArticles.fulfilled]: (state, action) => {
+    [fetchArticle.fulfilled]: (state, action) => {
       return {
-        articles: action.payload.data,
+        article: action.payload.data,
         status: 'succeeded',
         pagy: action.payload.pagy
       }
     },
-    [fetchArticles.rejected]: (state, action) => {
+    [fetchArticle.rejected]: (state, action) => {
       state.status = 'failed'
       state.error = action.error.message
     }
@@ -49,4 +49,4 @@ const articleSlice = createSlice({
 
 export default articleSlice.reducer
 
-export const selectAllArticles = state => state.articles.articles
+export const selectSingleArticle = state => state.article.article

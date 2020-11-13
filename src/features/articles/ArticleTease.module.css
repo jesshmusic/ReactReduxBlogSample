@@ -1,0 +1,27 @@
+.container {
+  align-items: center;
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid #8b9ea2;
+  cursor: pointer;
+  display: flex;
+  max-width: 30rem;
+  padding: 0.5rem;
+  transition: background-color 350ms ease-in-out, color 350ms ease-in-out;
+  width: 100%;
+}
+
+.container:hover {
+  background-color: #396ba0;
+  color: #fff;
+}
+
+.heading {
+  flex: 0 0 10rem;
+  font-size: 1.25rem;
+  padding: 0 1rem 0 0;
+}
+
+.body {
+  flex: 1;
+}
