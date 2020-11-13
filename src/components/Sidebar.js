@@ -2,45 +2,81 @@ import styles from '../App.module.css'
 import ArticleTease from '../features/articles/ArticleTease'
 import React from 'react'
 import PropTypes from 'prop-types'
+import { fetchArticles, searchArticles } from '../features/articles/articlesSlice'
+import { connect } from 'react-redux'
 
-const Sidebar = ({ searchValue, onSearch, onSearchChange, onSearchButton, onFetchSingleArticle, articles }) => {
-  return (
-    <div className={ styles.sidebar }>
-      <div className={styles.searchSection}>
-        <input className={styles.searchInput}
-               placeholder="Search..."
-               value={searchValue}
-               onKeyDown={onSearch}
-               onChange={onSearchChange}
-               autoFocus={true}
-        />
-        <button className={styles.searchButton}
-                onClick={onSearchButton}
-                title={'Search'}>
-          <i className="fas fa-search"/>
-        </button>
-      </div>
-      <div className={styles.articleCount}>
-        {articles.articles.length} articles out of {articles.pagy.count}
-      </div>
-      { articles.status === 'succeeded' ? (
-        articles.articles.map(article => (
-          <ArticleTease article={ article } key={ article.id } getArticle={onFetchSingleArticle}/>
-        ))) : (
+const ENTER_KEY = 13
+
+class Sidebar extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      searchValue: ''
+    }
+  }
+
+  componentDidMount () {
+    this.props.dispatch(fetchArticles())
+  }
+
+  handleSearchChange (event) {
+    this.setState({ searchValue: event.target.value })
+  }
+
+  handleSearchKeyDown (event) {
+    if (event.keyCode !== ENTER_KEY) {
+      return
+    }
+    event.preventDefault()
+    this.props.dispatch(searchArticles(this.state.searchValue))
+  }
+
+  handleSearchButton (event) {
+    event.preventDefault()
+    this.props.dispatch(searchArticles(this.state.searchValue))
+  }
+
+  render () {
+    const { onFetchSingleArticle, articles } = this.props
+    return (
+      <div className={ styles.sidebar }>
+        <div className={styles.searchSection}>
+          <input className={styles.searchInput}
+                 placeholder="Search..."
+                 value={this.state.searchValue}
+                 onKeyDown={this.handleSearchKeyDown.bind(this)}
+                 onChange={this.handleSearchChange.bind(this)}
+                 autoFocus={true}
+          />
+          <button className={styles.searchButton}
+                  onClick={this.handleSearchButton.bind(this)}
+                  title={'Search'}>
+            <i className="fas fa-search"/>
+          </button>
+        </div>
+        <div className={styles.articleCount}>
+          {articles.articles.length} articles out of {articles.pagy.count}
+        </div>
+        { articles.status === 'succeeded' ? (
+          articles.articles.map(article => (
+            <ArticleTease article={ article } key={ article.id } getArticle={onFetchSingleArticle}/>
+          ))) : (
           <i className="fas fa-spinner fa-spin"/>
         )
-      }
-    </div>
-  )
+        }
+      </div>
+    )
+  }
 }
 
 Sidebar.propTypes = {
-  searchValue: PropTypes.string,
   onFetchSingleArticle: PropTypes.func.isRequired,
-  onSearch: PropTypes.func.isRequired,
-  onSearchChange: PropTypes.func.isRequired,
-  onSearchButton: PropTypes.func.isRequired,
-  articles: PropTypes.object
+  articles: PropTypes.object,
+  dispatch: PropTypes.func
 }
 
-export default Sidebar
+const mapStateToProps = state => ({
+  articles: state.articles
+})
+
+export default connect(mapStateToProps)(Sidebar)
