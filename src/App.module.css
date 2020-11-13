@@ -10,6 +10,35 @@
   padding-right: 1rem;
 }
 
+.searchSection {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.searchButton {
+  background-color: #396ba0;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  flex: 0 0 3rem;
+  transition: background-color 350ms ease-in-out;
+}
+
+.searchButton:hover {
+  background-color: #445d58;
+}
+
+.searchInput {
+  padding: .5rem;
+  flex: 1;
+}
+
+.articleCount {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
 .content {
   display: flex;
   padding: 1rem;

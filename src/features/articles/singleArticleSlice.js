@@ -11,7 +11,7 @@ const initialState = {
 export const fetchArticle = createAsyncThunk('article/handleFetchSingleArticle', async (articleID) => {
   const article = await axios.get(`https://dialog-blog.herokuapp.com/articles/${articleID}`)
   const comments = await axios.get(`https://dialog-blog.herokuapp.com/comments?article_id=${articleID}`)
-  console.log(article.data)
+
   return {
     ...article.data.data,
     comments: comments.data.data
@@ -52,5 +52,3 @@ const articleSlice = createSlice({
 })
 
 export default articleSlice.reducer
-
-export const selectSingleArticle = state => state.article.article

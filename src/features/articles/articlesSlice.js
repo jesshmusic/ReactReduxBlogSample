@@ -13,6 +13,11 @@ export const fetchArticles = createAsyncThunk('articles/fetchPosts', async () =>
   return response.data
 })
 
+export const searchArticles = createAsyncThunk('articles/searchPosts', async (searchValue) => {
+  const response = await axios.get(`https://dialog-blog.herokuapp.com/articles?search=${searchValue}`)
+  return response.data
+})
+
 const articleSlice = createSlice({
   name: 'articles',
   initialState: initialState,
@@ -43,10 +48,22 @@ const articleSlice = createSlice({
     [fetchArticles.rejected]: (state, action) => {
       state.status = 'failed'
       state.error = action.error.message
+    },
+    [searchArticles.pending]: state => {
+      state.status = 'loading'
+    },
+    [searchArticles.fulfilled]: (state, action) => {
+      return {
+        articles: action.payload.data,
+        status: 'succeeded',
+        pagy: action.payload.pagy
+      }
+    },
+    [searchArticles.rejected]: (state, action) => {
+      state.status = 'failed'
+      state.error = action.error.message
     }
   }
 })
 
 export default articleSlice.reducer
-
-export const selectAllArticles = state => state.articles.articles

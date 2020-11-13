@@ -1,14 +1,19 @@
 import React from 'react'
 import styles from './App.module.css'
 import { connect } from 'react-redux'
-import { fetchArticles } from './features/articles/articlesSlice'
+import { fetchArticles, searchArticles } from './features/articles/articlesSlice'
 import ArticleTease from './features/articles/ArticleTease'
 import { fetchArticle } from './features/articles/singleArticleSlice'
 import { PropTypes } from 'prop-types'
 
+const ENTER_KEY = 13
+
 class App extends React.Component {
   constructor (props) {
     super(props)
+    this.state = {
+      searchValue: ''
+    }
     this.handleFetchSingleArticle = this.handleFetchSingleArticle.bind(this)
   }
 
@@ -26,6 +31,23 @@ class App extends React.Component {
     this.props.dispatch(fetchArticle(articleID))
   }
 
+  handleSearchChange (event) {
+    this.setState({ searchValue: event.target.value })
+  }
+
+  handleSearchKeyDown (event) {
+    if (event.keyCode !== ENTER_KEY) {
+      return
+    }
+    event.preventDefault()
+    this.props.dispatch(searchArticles(this.state.searchValue))
+  }
+
+  handleSearchButton (event) {
+    event.preventDefault()
+    this.props.dispatch(searchArticles(this.state.searchValue))
+  }
+
   render () {
     const { article, articles } = this.props
     return (
@@ -35,6 +57,24 @@ class App extends React.Component {
         </header>
         <section className={ styles.content }>
           <div className={ styles.sidebar }>
+            <div className={styles.searchSection}>
+              <input className={styles.searchInput}
+                     placeholder="Search..."
+                     value={this.state.searchValue}
+                     onKeyDown={this.handleSearchKeyDown.bind(this)}
+                     onChange={this.handleSearchChange.bind(this)}
+                     autoFocus={true}
+              />
+              <button className={styles.searchButton}
+                      onClick={this.handleSearchButton.bind(this)}
+                      disabled={this.state.searchValue.length < 4}
+                      title={'Search'}>
+                <i className="fas fa-search"/>
+              </button>
+            </div>
+            <div className={styles.articleCount}>
+              {articles.articles.length} articles out of {articles.pagy.count}
+            </div>
             { articles.status === 'succeeded' ? (articles.articles.map(article => (
               <ArticleTease article={ article } key={ article.id } getArticle={this.handleFetchSingleArticle}/>
             ))) : (
