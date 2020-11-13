@@ -3,7 +3,7 @@ import styles from './App.module.css'
 import { connect } from 'react-redux'
 import { fetchArticles, searchArticles } from './features/articles/articlesSlice'
 import { fetchArticle } from './features/articles/singleArticleSlice'
-import { PropTypes } from 'prop-types'
+import PropTypes from 'prop-types'
 import Sidebar from './components/Sidebar'
 
 const ENTER_KEY = 13

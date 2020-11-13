@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './ArticleTease.module.css'
-import { PropTypes } from 'prop-types'
+import PropTypes from 'prop-types'
 
 const ArticleTease = ({ article, getArticle }) => {
   return (

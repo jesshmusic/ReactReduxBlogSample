@@ -1,7 +1,7 @@
 import styles from '../App.module.css'
 import ArticleTease from '../features/articles/ArticleTease'
 import React from 'react'
-import { PropTypes } from 'prop-types'
+import PropTypes from 'prop-types'
 
 const Sidebar = ({ searchValue, onSearch, onSearchChange, onSearchButton, onFetchSingleArticle, articles }) => {
   return (
@@ -40,7 +40,7 @@ Sidebar.propTypes = {
   onSearch: PropTypes.func.isRequired,
   onSearchChange: PropTypes.func.isRequired,
   onSearchButton: PropTypes.func.isRequired,
-  articles: PropTypes.array
+  articles: PropTypes.object
 }
 
 export default Sidebar
