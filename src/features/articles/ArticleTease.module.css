@@ -1,12 +1,12 @@
 .container {
-  align-items: center;
   background-color: transparent;
   border: 0;
   border-bottom: 1px solid #8b9ea2;
   cursor: pointer;
-  display: flex;
+  display: block;
   max-width: 30rem;
   padding: 0.5rem;
+  text-align: left;
   transition: background-color 350ms ease-in-out, color 350ms ease-in-out;
   width: 100%;
 }
@@ -17,9 +17,9 @@
 }
 
 .heading {
-  flex: 0 0 10rem;
-  font-size: 1.25rem;
-  padding: 0 1rem 0 0;
+  font-size: 1.15rem;
+  margin: 0;
+  padding: 0.25rem 0;
 }
 
 .body {

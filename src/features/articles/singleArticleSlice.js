@@ -8,9 +8,14 @@ const initialState = {
   comments: []
 }
 
-export const fetchArticle = createAsyncThunk('article/fetchSingleArticle', async (articleID) => {
-  const response = await axios.get(`https://dialog-blog.herokuapp.com/articles/${articleID}`)
-  return response.data
+export const fetchArticle = createAsyncThunk('article/handleFetchSingleArticle', async (articleID) => {
+  const article = await axios.get(`https://dialog-blog.herokuapp.com/articles/${articleID}`)
+  const comments = await axios.get(`https://dialog-blog.herokuapp.com/comments?article_id=${articleID}`)
+  console.log(article.data)
+  return {
+    ...article.data.data,
+    comments: comments.data.data
+  }
 })
 
 const articleSlice = createSlice({
@@ -35,9 +40,8 @@ const articleSlice = createSlice({
     },
     [fetchArticle.fulfilled]: (state, action) => {
       return {
-        article: action.payload.data,
-        status: 'succeeded',
-        pagy: action.payload.pagy
+        article: action.payload,
+        status: 'succeeded'
       }
     },
     [fetchArticle.rejected]: (state, action) => {

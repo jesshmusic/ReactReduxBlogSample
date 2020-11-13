@@ -9,17 +9,20 @@ import { PropTypes } from 'prop-types'
 class App extends React.Component {
   constructor (props) {
     super(props)
-    this.fetchSingleArticle = this.fetchSingleArticle.bind(this)
+    this.handleFetchSingleArticle = this.handleFetchSingleArticle.bind(this)
   }
 
   componentDidMount () {
     this.props.dispatch(fetchArticles())
-    this.props.dispatch(fetchArticle(1))
+    this.fetchSingleArticle(1)
   }
 
-  fetchSingleArticle (event, articleID) {
+  handleFetchSingleArticle (event, articleID) {
     event.preventDefault()
-    console.log(this)
+    this.fetchSingleArticle(articleID)
+  }
+
+  fetchSingleArticle (articleID) {
     this.props.dispatch(fetchArticle(articleID))
   }
 
@@ -33,7 +36,7 @@ class App extends React.Component {
         <section className={ styles.content }>
           <div className={ styles.sidebar }>
             { articles.status === 'succeeded' ? (articles.articles.map(article => (
-              <ArticleTease article={ article } key={ article.id } getArticle={this.fetchSingleArticle}/>
+              <ArticleTease article={ article } key={ article.id } getArticle={this.handleFetchSingleArticle}/>
             ))) : (
               <i className="fas fa-spinner fa-spin"/>
             )
@@ -48,6 +51,14 @@ class App extends React.Component {
                 <div>
                   { article.article.body }
                 </div>
+                {article.article.comments ? (
+                  <div>
+                    <h3>Comments</h3>
+                    {article.article.comments.map(articleComment => (
+                      <div key={`articleComment${articleComment.id}`}>{articleComment.body}</div>
+                    ))}
+                  </div>
+                ) : null}
               </article>
             ) }
           </div>
