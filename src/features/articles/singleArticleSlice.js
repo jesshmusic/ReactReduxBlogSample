@@ -33,6 +33,11 @@ export const createArticle = createAsyncThunk('article/handleCreateSingleArticle
   return article.data.data
 })
 
+export const deleteArticle = createAsyncThunk('article/handleDeleteSingleArticle', async (articleID) => {
+  const response = await axios.delete(`https://dialog-blog.herokuapp.com/articles/${articleID}`)
+  return response.data
+})
+
 const articleSlice = createSlice({
   name: 'article',
   initialState: initialState,
@@ -86,6 +91,18 @@ const articleSlice = createSlice({
       }
     },
     [createArticle.rejected]: (state, action) => {
+      state.status = 'failed'
+      state.error = action.error.message
+    },
+    [deleteArticle.pending]: state => {
+      state.status = 'loading'
+    },
+    [deleteArticle.fulfilled]: () => {
+      return {
+        status: 'succeeded'
+      }
+    },
+    [deleteArticle.rejected]: (state, action) => {
       state.status = 'failed'
       state.error = action.error.message
     }

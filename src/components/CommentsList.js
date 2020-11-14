@@ -92,7 +92,7 @@ class CommentsList extends React.Component {
 
 CommentsList.propTypes = {
   articleID: PropTypes.number.isRequired,
-  comments: PropTypes.array,
+  comments: PropTypes.any,
   dispatch: PropTypes.func.isRequired
 }
 

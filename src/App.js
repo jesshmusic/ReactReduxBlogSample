@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './App.module.css'
 import { connect } from 'react-redux'
-import { createArticle, fetchArticle, updateArticle } from './features/articles/singleArticleSlice'
+import { createArticle, deleteArticle, fetchArticle, updateArticle } from './features/articles/singleArticleSlice'
 import PropTypes from 'prop-types'
 import Sidebar from './components/Sidebar'
 import ArticleDisplay from './components/ArticleDisplay'
@@ -32,6 +32,10 @@ class App extends React.Component {
     this.props.dispatch(updateArticle(articleData))
   }
 
+  deletePost (articleID) {
+    this.props.dispatch(deleteArticle(articleID))
+  }
+
   render () {
     const { article, articles } = this.props
     return (
@@ -44,6 +48,7 @@ class App extends React.Component {
                    articles={articles}/>
           <ArticleDisplay article={article}
                           onCancelError={this.cancelError.bind(this)}
+                          onDeleteSingleArticle={this.deletePost.bind(this)}
                           onUpdateSingleArticle={this.updatePost.bind(this)}
                           onCreateSingleArticle={this.createPost.bind(this)}/>
         </section>

@@ -42,6 +42,10 @@ class ArticleDisplay extends React.Component {
     this.setState({ isCreating: false })
   }
 
+  deletePost () {
+    this.props.onDeleteSingleArticle(this.props.article.article.id)
+  }
+
   updatePost (event, articleData) {
     event.preventDefault()
     this.props.onUpdateSingleArticle(articleData)
@@ -76,6 +80,7 @@ class ArticleDisplay extends React.Component {
                           onClick={ this.toggleCreateState.bind(this) }>NEW
                   </button>
                   <button className={ 'btn btn-danger' }
+                          onClick={this.deletePost.bind(this)}
                           id={'deleteArticleButton'}>Delete</button>
                 </div>
               </div>
@@ -121,6 +126,7 @@ ArticleDisplay.propTypes = {
   defaultArticleID: PropTypes.number,
   onCancelError: PropTypes.func.isRequired,
   onCreateSingleArticle: PropTypes.func.isRequired,
+  onDeleteSingleArticle: PropTypes.func.isRequired,
   onUpdateSingleArticle: PropTypes.func.isRequired
 }
 

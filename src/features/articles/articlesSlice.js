@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
-import { createArticle, updateArticle } from './singleArticleSlice'
+import { createArticle, deleteArticle, updateArticle } from './singleArticleSlice'
 
 const initialState = {
   articles: [],
@@ -72,6 +72,12 @@ const articleSlice = createSlice({
     [createArticle.fulfilled]: (state, action) => {
       return {
         articles: [action.payload, ...state.articles]
+      }
+    },
+    [deleteArticle.fulfilled]: (state, action) => {
+      return {
+        article: action.payload,
+        status: 'succeeded'
       }
     }
   }
