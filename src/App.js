@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './App.module.css'
 import { connect } from 'react-redux'
-import { fetchArticle } from './features/articles/singleArticleSlice'
+import { createArticle, fetchArticle, updateArticle } from './features/articles/singleArticleSlice'
 import PropTypes from 'prop-types'
 import Sidebar from './components/Sidebar'
 import ArticleDisplay from './components/ArticleDisplay'
@@ -20,6 +20,14 @@ class App extends React.Component {
     this.props.dispatch(fetchArticle(articleID))
   }
 
+  createPost (articleData) {
+    this.props.dispatch(createArticle(articleData))
+  }
+
+  updatePost (articleData) {
+    this.props.dispatch(updateArticle(articleData))
+  }
+
   render () {
     const { article, articles } = this.props
     return (
@@ -30,7 +38,9 @@ class App extends React.Component {
         <section className={ styles.content }>
           <Sidebar onFetchSingleArticle={this.handleFetchSingleArticle.bind(this)}
                    articles={articles}/>
-          <ArticleDisplay article={article} />
+          <ArticleDisplay article={article}
+                          onUpdateSingleArticle={this.updatePost.bind(this)}
+                          onCreateSingleArticle={this.createPost.bind(this)}/>
         </section>
       </div>
     )

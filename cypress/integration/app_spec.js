@@ -19,8 +19,6 @@ describe('The Main Page Content', () => {
 describe('The Redux store', () => {
   it('has articles state on load', () => {
     cy.visit('/')
-    // cy.server().route('GET', `${API_URL}/articles`).as('getArticlesFirst')
-    // cy.wait('@getArticlesFirst').its('status').should('equal', 200)
     cy.window().its('store').should('exist')
     cy.window()
       .its('store')
@@ -30,13 +28,32 @@ describe('The Redux store', () => {
 
   it('has 1 main article on load', () => {
     cy.visit('/')
-    // cy.server().route('GET', `${API_URL}/articles/1`).as('getArticleFirst')
-    // cy.wait('@getArticleFirst').its('status').should('equal', 200)
     cy.window().its('store').should('exist')
     cy.window()
       .its('store')
       .invoke('getState')
       .its('article')
       .should('exist')
+  })
+})
+
+describe('The Article', () => {
+  it('switches to edit mode', () => {
+    cy.visit('/')
+    cy.get('.btn.btn-info').click()
+    cy.get('#ArticleEditForm').should('exist')
+  })
+  it('switches back to read mode', () => {
+    cy.get('.btn.btn-warning').click()
+    cy.get('#ArticleEditForm').should('not.exist')
+  })
+  it('switches to create mode', () => {
+    cy.visit('/')
+    cy.get('.btn.btn-success').click()
+    cy.get('#ArticleCreateForm').should('exist')
+  })
+  it('switches back to read mode', () => {
+    cy.get('.btn.btn-warning').click()
+    cy.get('#ArticleCreateForm').should('not.exist')
   })
 })
