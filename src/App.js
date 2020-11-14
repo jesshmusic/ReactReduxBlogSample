@@ -16,6 +16,10 @@ class App extends React.Component {
     this.fetchSingleArticle(articleID)
   }
 
+  cancelError (articleID) {
+    this.props.dispatch(fetchArticle(articleID))
+  }
+
   fetchSingleArticle (articleID) {
     this.props.dispatch(fetchArticle(articleID))
   }
@@ -39,6 +43,7 @@ class App extends React.Component {
           <Sidebar onFetchSingleArticle={this.handleFetchSingleArticle.bind(this)}
                    articles={articles}/>
           <ArticleDisplay article={article}
+                          onCancelError={this.cancelError.bind(this)}
                           onUpdateSingleArticle={this.updatePost.bind(this)}
                           onCreateSingleArticle={this.createPost.bind(this)}/>
         </section>
