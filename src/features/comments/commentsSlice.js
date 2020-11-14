@@ -35,6 +35,11 @@ export const createComment = createAsyncThunk('article/handleCreateSingleComment
   return comments.data.data
 })
 
+export const deleteComment = createAsyncThunk('article/handleDeleteComment', async (commentID) => {
+  const response = await axios.delete(`https://dialog-blog.herokuapp.com/comments/${commentID}`)
+  return response.data
+})
+
 const commentsSlice = createSlice({
   name: 'article',
   initialState: initialState,
@@ -88,6 +93,19 @@ const commentsSlice = createSlice({
       }
     },
     [createComment.rejected]: (state, action) => {
+      state.status = 'failed'
+      state.error = action.error.message
+    },
+    [deleteComment.pending]: state => {
+      state.status = 'loading'
+    },
+    [deleteComment.fulfilled]: (state, action) => {
+      return {
+        comments: state.comments.filter((comment) => comment.id !== action.payload.id),
+        status: 'succeeded'
+      }
+    },
+    [deleteComment.rejected]: (state, action) => {
       state.status = 'failed'
       state.error = action.error.message
     }

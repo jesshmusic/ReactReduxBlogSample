@@ -10,6 +10,11 @@ class Comment extends React.Component {
     }
   }
 
+  deleteComment (event) {
+    event.preventDefault()
+    this.props.onDeleteComment(this.props.comment.id)
+  }
+
   editComment (event) {
     event.preventDefault()
     this.props.onEditComment(this.state.commentData)
@@ -54,7 +59,8 @@ class Comment extends React.Component {
           <button className={'btn btn-info edit-comment'}
                   id={`editCommentButton-${this.props.comment.id}`}
                   onClick={this.toggleCommentForm.bind(this)}>Edit</button>
-          <button className={'btn btn-danger'}>Delete</button>
+          <button className={'btn btn-danger'}
+                  onClick={this.deleteComment.bind(this)}>Delete</button>
         </div>
       </div>
     )
@@ -66,6 +72,7 @@ Comment.propTypes = {
     body: PropTypes.string,
     id: PropTypes.number
   }).isRequired,
+  onDeleteComment: PropTypes.func.isRequired,
   onEditComment: PropTypes.func.isRequired
 }
 

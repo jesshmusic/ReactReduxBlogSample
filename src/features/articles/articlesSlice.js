@@ -76,7 +76,7 @@ const articleSlice = createSlice({
     },
     [deleteArticle.fulfilled]: (state, action) => {
       return {
-        article: action.payload,
+        articles: state.articles.filter((article) => article.id !== action.payload.id),
         status: 'succeeded'
       }
     }

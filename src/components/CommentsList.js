@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Comment from './Comment'
 import { connect } from 'react-redux'
-import { fetchComments, createComment, updateComment } from '../features/comments/commentsSlice'
+import { fetchComments, createComment, updateComment, deleteComment } from '../features/comments/commentsSlice'
 
 class CommentsList extends React.Component {
   constructor (props) {
@@ -38,6 +38,10 @@ class CommentsList extends React.Component {
     })
   }
 
+  deleteComment (commentID) {
+    this.props.dispatch(deleteComment(commentID))
+  }
+
   editComment (commentData) {
     this.props.dispatch(updateComment(this.props.articleID, commentData))
   }
@@ -71,7 +75,9 @@ class CommentsList extends React.Component {
                       onChange={this.handleNewCommentChange.bind(this)}
                       value={this.state.newCommentData.body}
                       placeholder="Comment" />
-            <button type="submit" className="btn btn-primary mb-2" onClick={this.createComment.bind(this)}>Submit</button>
+            <button type="submit"
+                    className="btn btn-primary mb-2"
+                    onClick={this.createComment.bind(this)}>Submit</button>
           </form>
         ) : null}
         { this.props.comments ? (
@@ -79,6 +85,7 @@ class CommentsList extends React.Component {
           { this.props.comments.comments.map(articleComment => (
             <Comment key={ `articleComment${articleComment.id}` }
                      comment={ articleComment }
+                     onDeleteComment={ this.deleteComment.bind(this) }
                      onEditComment={ this.editComment.bind(this) }/>
           )) }
         </div>
