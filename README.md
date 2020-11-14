@@ -6,6 +6,8 @@ This app uses React along with Redux to create the blog. Axios is utilized for R
 
 **_NOTE_**: _I think there is a cross origin issue with the Rails backend. I believe I have properly set up the API requests to work with a Rails backend, but I am getting either `404` or `422` errors. The `404` only happens on editing an article, any other POST, DELETE, or PUT requests are a `422` or a `CORS` error. Because I had setup this app with Redux from the start, it would have required a lot of additional time to switch to local storage. I can rebuild it that way if you all would like, but I thought you might want to at lease see the code with Redux._
 
+_Normally to solve this problem I would look at the Rails code. It might be something as simple as needing some CORS setup to allow requests from anywhere. It might also be that I am missing a properly formatted request body or some kind of header setup. If the backend is fixed I can revisit to make sure the app works in a small amount of time._
+
 ## Running Cypress tests
 
 After starting the local development with `yarn start`, in a separate terminal window run `yarn run cypress open`.
