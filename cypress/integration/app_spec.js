@@ -40,7 +40,7 @@ describe('The Redux store', () => {
 describe('The Article', () => {
   it('switches to edit mode', () => {
     cy.visit('/')
-    cy.get('.btn.btn-info').click()
+    cy.get('#editArticleButton').click()
     cy.get('#ArticleEditForm').should('exist')
   })
   it('switches back to read mode', () => {
@@ -49,11 +49,23 @@ describe('The Article', () => {
   })
   it('switches to create mode', () => {
     cy.visit('/')
-    cy.get('.btn.btn-success').click()
+    cy.get('#newArticleButton').click()
     cy.get('#ArticleCreateForm').should('exist')
   })
   it('switches back to read mode', () => {
     cy.get('.btn.btn-warning').click()
     cy.get('#ArticleCreateForm').should('not.exist')
+  })
+})
+
+describe('The Comments', () => {
+  it('switches to edit mode', () => {
+    cy.visit('/')
+    cy.get('#editCommentButton-1').click()
+    cy.get('#CommentEditForm').should('exist')
+  })
+  it('switches back to read mode', () => {
+    cy.get('.cancel-edit-comment').click()
+    cy.get('#CommentEditForm').should('not.exist')
   })
 })

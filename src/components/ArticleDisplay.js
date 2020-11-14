@@ -67,13 +67,16 @@ class ArticleDisplay extends React.Component {
             <article className={ styles.article }>
               <div className={ 'pt-3 pb-5 btn-toolbar' }>
                 <button className={ 'btn btn-info' }
+                        id={'editArticleButton'}
                         onClick={ this.toggleEditState.bind(this) }>Edit
                 </button>
                 <div className={'btn-group ml-auto mr-0'}>
                   <button className={ 'btn btn-success' }
+                          id={'newArticleButton'}
                           onClick={ this.toggleCreateState.bind(this) }>NEW
                   </button>
-                  <button className={ 'btn btn-danger' }>Delete</button>
+                  <button className={ 'btn btn-danger' }
+                          id={'deleteArticleButton'}>Delete</button>
                 </div>
               </div>
               <h2>{ this.props.article.article.title }</h2>

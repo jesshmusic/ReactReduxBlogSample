@@ -33,7 +33,9 @@ class Comment extends React.Component {
 
   render () {
     return this.state.showCommentForm ? (
-      <form className={'list-group-item form-inline w-100'} onSubmit={this.editComment.bind(this)}>
+      <form className={'list-group-item form-inline w-100'}
+            onSubmit={this.editComment.bind(this)}
+            id={'CommentEditForm'}>
         <label className={'sr-only'} htmlFor="commentBody">Comment Text</label>
         <textarea className="form-control mb-2 mr-sm-2"
                   id="commentBody"
@@ -42,14 +44,16 @@ class Comment extends React.Component {
                   placeholder="Comment" />
         <div className={'btn-group ml-auto mr-0'}>
           <button type="submit" className="btn btn-primary mb-2" onClick={this.editComment.bind(this)}>Submit</button>
-          <button className="btn btn-warning mb-2" onClick={this.toggleCommentForm.bind(this)}>Cancel</button>
+          <button className="btn btn-warning mb-2 cancel-edit-comment" onClick={this.toggleCommentForm.bind(this)}>Cancel</button>
         </div>
       </form>
     ) : (
       <div className={'list-group-item d-flex'}>
         <div>{ this.props.comment.body }</div>
         <div className={'btn-group ml-auto mr-0'}>
-          <button className={'btn btn-info'} onClick={this.toggleCommentForm.bind(this)}>Edit</button>
+          <button className={'btn btn-info edit-comment'}
+                  id={`editCommentButton-${this.props.comment.id}`}
+                  onClick={this.toggleCommentForm.bind(this)}>Edit</button>
           <button className={'btn btn-danger'}>Delete</button>
         </div>
       </div>
