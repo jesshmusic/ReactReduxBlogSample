@@ -10,37 +10,27 @@ const initialState = {
 
 export const fetchArticle = createAsyncThunk('article/handleFetchSingleArticle', async (articleID) => {
   const article = await axios.get(`https://dialog-blog.herokuapp.com/articles/${articleID}`)
-  const comments = await axios.get(`https://dialog-blog.herokuapp.com/comments?article_id=${articleID}`)
-
-  return {
-    ...article.data.data,
-    comments: comments.data.data
-  }
+  return article.data.data
 })
 
 export const updateArticle = createAsyncThunk('article/handleUpdateSingleArticle', async (articleData) => {
-  const article = await axios.put('https://dialog-blog.herokuapp.com/articles/', {
-    id: articleData.id,
-    title: articleData.title,
-    body: articleData.body
+  const article = await axios.put(`https://dialog-blog.herokuapp.com/articles/${articleData.id}`, {
+    article: {
+      title: articleData.title,
+      body: articleData.body
+    }
   })
-  const comments = await axios.get(`https://dialog-blog.herokuapp.com/comments?article_id=${article.id}`)
-  return {
-    ...article.data.data,
-    comments: comments.data.data
-  }
+  return article.data.data
 })
 
 export const createArticle = createAsyncThunk('article/handleCreateSingleArticle', async (articleData) => {
   const article = await axios.post('https://dialog-blog.herokuapp.com/articles/', {
-    title: articleData.title,
-    body: articleData.body
+    article: {
+      title: articleData.title,
+      body: articleData.body
+    }
   })
-  const comments = await axios.get(`https://dialog-blog.herokuapp.com/comments?article_id=${article.id}`)
-  return {
-    ...article.data.data,
-    comments: comments.data.data
-  }
+  return article.data.data
 })
 
 const articleSlice = createSlice({

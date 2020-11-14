@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { createArticle, updateArticle } from './singleArticleSlice'
 
 const initialState = {
   articles: [],
@@ -62,6 +63,16 @@ const articleSlice = createSlice({
     [searchArticles.rejected]: (state, action) => {
       state.status = 'failed'
       state.error = action.error.message
+    },
+    [updateArticle.fulfilled]: (state, action) => {
+      return {
+        articles: state.articles.map(article => (article.id === action.payload.id ? action.payload : article))
+      }
+    },
+    [createArticle.fulfilled]: (state, action) => {
+      return {
+        articles: [action.payload, ...state.articles]
+      }
     }
   }
 })

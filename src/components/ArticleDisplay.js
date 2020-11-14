@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import ArticleForm from './ArticleForm'
 import Error from './Error'
+import CommentsList from './CommentsList'
 
 class ArticleDisplay extends React.Component {
   constructor (props) {
@@ -79,14 +80,7 @@ class ArticleDisplay extends React.Component {
               <div className={'mb-5'}>
                 { this.props.article.article.body }
               </div>
-              { this.props.article.article.comments ? (
-                <div>
-                  <h3>Comments</h3>
-                  { this.props.article.article.comments.map(articleComment => (
-                    <div key={ `articleComment${articleComment.id}` }>{ articleComment.body }</div>
-                  )) }
-                </div>
-              ) : null }
+              <CommentsList articleID={this.props.article.article.id} />
             </article>
           </div>
       )
